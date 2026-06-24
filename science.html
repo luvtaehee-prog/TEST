@@ -1,0 +1,719 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>과학 빈칸 테스트: 물질의 구성 · 2학년 6반 최후의 1인</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Gowun+Batang:wght@400;700&family=Noto+Sans+KR:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --green:#0E5C3F; --green-d:#093F2B; --green-l:#13754F;
+  --ivory:#F6F4EC; --paper:#FFFFFF; --ink:#1A2421; --mute:#6B7670;
+  --gold:#E8B53D; --gold-d:#C7951E; --xp:#22C55E;
+  --ok:#15803D; --ok-bg:#E7F5EC; --no:#B91C1C; --no-bg:#FBEAEA;
+  --line:#E2E0D6; --lock:#B7B5AA;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--ivory);color:var(--ink);
+  font-family:'Noto Sans KR','Malgun Gothic','Apple SD Gothic Neo',sans-serif;line-height:1.7}
+.han{font-family:'Black Han Sans','Noto Sans KR',sans-serif;font-weight:400;letter-spacing:.01em}
+.disp{font-family:'Gowun Batang',serif}
+button{font-family:inherit;cursor:pointer}
+.hidden{display:none!important}
+
+/* App header */
+header{background:linear-gradient(135deg,var(--green) 0%,var(--green-d) 70%);color:#fff;
+  padding:20px 18px 16px;position:relative;overflow:hidden}
+header::after{content:"🧪";position:absolute;right:14px;top:10px;font-size:64px;opacity:.12;transform:rotate(-15deg)}
+.title{font-size:24px;line-height:1.15;margin:0;text-shadow:0 2px 0 rgba(0,0,0,.18)}
+.title b{color:var(--gold)}
+.by{font-size:12px;opacity:.82;margin-top:4px}
+.by b{color:var(--gold)}
+
+/* Player panel */
+.player{max-width:860px;margin:-10px auto 0;padding:0 16px;position:relative;z-index:2}
+.pcard{background:var(--paper);border:1px solid var(--line);border-radius:16px;padding:14px 16px;
+  box-shadow:0 6px 18px rgba(14,92,63,.10)}
+.prow{display:flex;align-items:center;gap:12px}
+.badge{flex:0 0 auto;width:54px;height:54px;border-radius:14px;background:linear-gradient(135deg,var(--gold),var(--gold-d));
+  display:flex;flex-direction:column;align-items:center;justify-content:center;color:#3a2c05;font-weight:900;box-shadow:0 3px 0 var(--gold-d)}
+.badge small{font-size:9px;line-height:1;opacity:.8}
+.badge b{font-size:20px;line-height:1}
+.pinfo{flex:1;min-width:0}
+.ptitle{font-weight:900;font-size:17px;color:var(--green)}
+.pstat{font-size:12px;color:var(--mute);margin-top:1px}
+.pstat .dot{color:var(--gold-d);font-weight:700}
+.xpwrap{margin-top:10px}
+.xpbar{height:12px;background:#EDEBDF;border-radius:8px;overflow:hidden;border:1px solid var(--line)}
+.xpfill{height:100%;background:linear-gradient(90deg,var(--xp),#16A34A);width:0;transition:width .6s cubic-bezier(.2,.8,.2,1);border-radius:8px}
+.xptext{font-size:11px;color:var(--mute);margin-top:4px;display:flex;justify-content:space-between}
+
+main{max-width:860px;margin:0 auto;padding:14px 16px 90px}
+
+/* Finale banner */
+.finale-card{margin:14px 0 8px;border-radius:16px;padding:16px;color:#fff;position:relative;overflow:hidden;
+  background:linear-gradient(120deg,#6D28D9,#9333EA)}
+.finale-card.locked{background:#D9D7CC;color:#7A786E}
+.finale-card h3{margin:0;font-size:19px}
+.finale-card p{margin:4px 0 12px;font-size:12.5px;opacity:.92}
+.finale-card .btn{background:#fff;color:#7C3AED;border:none;border-radius:10px;padding:10px 16px;font-weight:900;font-size:14px}
+.finale-card.locked .btn{background:#bbb9ad;color:#fff;cursor:not-allowed}
+.finale-card .fx{position:absolute;right:-6px;bottom:-14px;font-size:80px;opacity:.18}
+
+.sectionlabel{font-size:12px;font-weight:800;color:var(--mute);letter-spacing:.08em;margin:18px 2px 8px;text-transform:uppercase}
+.reviewbtn{float:right;font-size:11px;border:1px solid var(--line);background:#fff;color:var(--mute);border-radius:20px;padding:4px 11px;font-weight:700}
+.reviewbtn.on{background:var(--green);color:#fff;border-color:var(--green)}
+
+/* World rows */
+.world{background:var(--paper);border:1px solid var(--line);border-radius:14px;margin:0 0 10px;overflow:hidden}
+.world.locked{opacity:.6}
+.whead{display:flex;align-items:center;gap:10px;padding:13px 15px;cursor:pointer;user-select:none}
+.wno{flex:0 0 auto;width:30px;height:30px;border-radius:9px;background:var(--green);color:#fff;font-weight:900;font-size:12px;display:flex;align-items:center;justify-content:center}
+.world.locked .wno{background:var(--lock)}
+.wtitle{flex:1;min-width:0}
+.wtitle b{font-size:15px;display:block}
+.wtitle small{font-size:11px;color:var(--mute)}
+.wmeta{font-size:12px;color:var(--gold-d);font-weight:800;white-space:nowrap}
+.wmeta .lk{color:var(--lock)}
+.chev{transition:transform .2s;color:var(--mute);font-size:13px}
+.world.open .chev{transform:rotate(90deg)}
+.stages{display:none;padding:4px 12px 14px;gap:8px;flex-wrap:wrap}
+.world.open .stages{display:flex}
+.stage{flex:1 1 calc(50% - 8px);min-width:200px;border:1.5px solid var(--line);border-radius:11px;padding:10px 12px;background:#FBFAF4;
+  display:flex;align-items:center;gap:10px;cursor:pointer;transition:.12s}
+.stage:hover{border-color:var(--green-l);background:#fff}
+.stage.locked{opacity:.55;cursor:not-allowed;background:#F1F0E8}
+.stage .sno{flex:0 0 auto;font-size:11px;font-weight:800;color:var(--green);background:#fff;border:1px solid var(--line);border-radius:7px;padding:2px 7px}
+.stage .stt{flex:1;font-size:13px;font-weight:600;line-height:1.3}
+.stage .stars{flex:0 0 auto;font-size:13px;letter-spacing:-1px;color:var(--gold)}
+.stage .stars .e{color:#D9D7CC}
+
+/* Quiz screen */
+#quiz .qbar{position:sticky;top:0;z-index:20;background:var(--ivory);border-bottom:1px solid var(--line);
+  display:flex;align-items:center;gap:10px;padding:11px 16px}
+.backbtn{border:none;background:none;color:var(--green);font-weight:800;font-size:14px;padding:4px}
+.qbar .qh{flex:1;min-width:0}
+.qbar .qh b{font-size:15px;display:block;line-height:1.2}
+.qbar .qh small{font-size:11px;color:var(--mute)}
+.qbody{max-width:860px;margin:0 auto;padding:8px 16px 30px}
+.q{display:flex;gap:11px;padding:12px 2px;border-bottom:1px dashed var(--line)}
+.q:last-child{border-bottom:none}
+.qn{flex:0 0 auto;width:26px;height:26px;margin-top:1px;border-radius:50%;background:var(--green);color:#fff;font-weight:700;font-size:12px;display:flex;align-items:center;justify-content:center}
+.qt{flex:1;font-size:15.5px}
+.blank{position:relative;display:inline-flex;align-items:center;vertical-align:baseline}
+.blank input{font-family:inherit;font-size:15px;text-align:center;color:var(--green-d);font-weight:700;border:none;
+  border-bottom:2px solid var(--green-l);background:#FBFAF4;min-width:64px;padding:1px 7px;margin:0 2px;border-radius:4px 4px 0 0}
+.blank input:focus{outline:none;background:#fff;border-bottom-color:var(--gold);box-shadow:0 2px 0 -1px var(--gold)}
+.blank input.ok{color:var(--ok);border-bottom-color:var(--ok);background:var(--ok-bg)}
+.blank input.no{color:var(--no);border-bottom-color:var(--no);background:var(--no-bg)}
+.ansnote{display:none;font-size:13px;font-weight:700;margin-left:3px;padding:0 5px;border-radius:5px;white-space:nowrap}
+.ansnote.show{display:inline-block;color:#fff;background:var(--green)}
+.ansnote.show::before{content:"정답 ";font-weight:400;opacity:.75;font-size:11px}
+.qfoot{position:sticky;bottom:0;background:linear-gradient(0deg,var(--ivory) 70%,transparent);padding:12px 16px;
+  max-width:860px;margin:0 auto;display:flex;gap:8px}
+.qfoot button{flex:1;border-radius:11px;padding:13px;font-weight:900;font-size:15px;border:1.5px solid var(--green)}
+.qfoot .ghost{background:#fff;color:var(--green);flex:0 0 auto;padding:13px 16px}
+.qfoot .go{background:var(--green);color:#fff}
+.qfoot .go:hover{background:var(--green-d)}
+
+/* Modal */
+.scrim{position:fixed;inset:0;background:rgba(9,40,30,.55);display:flex;align-items:center;justify-content:center;
+  z-index:60;padding:18px;opacity:0;pointer-events:none;transition:.2s}
+.scrim.show{opacity:1;pointer-events:auto}
+.modal{background:#fff;border-radius:20px;max-width:380px;width:100%;padding:24px 22px;text-align:center;
+  transform:scale(.92);transition:.2s;box-shadow:0 20px 50px rgba(0,0,0,.3)}
+.scrim.show .modal{transform:scale(1)}
+.modal .bigstars{font-size:40px;letter-spacing:2px;color:var(--gold)}
+.modal .bigstars .e{color:#E4E2D6}
+.modal h2{margin:6px 0 2px;font-size:22px}
+.modal .acc{font-size:14px;color:var(--mute)}
+.modal .xpget{margin:14px auto;background:var(--ok-bg);color:var(--ok);font-weight:900;font-size:16px;border-radius:12px;padding:10px;max-width:220px}
+.modal .xpget.none{background:#F1F0E8;color:var(--mute)}
+.lvlup{margin:10px auto;background:linear-gradient(90deg,var(--gold),var(--gold-d));color:#3a2c05;font-weight:900;
+  padding:10px;border-radius:12px;font-size:15px;animation:pop .4s}
+@keyframes pop{0%{transform:scale(.6);opacity:0}60%{transform:scale(1.08)}100%{transform:scale(1);opacity:1}}
+.modal .mbtns{display:flex;gap:8px;margin-top:6px}
+.modal .mbtns button{flex:1;border-radius:11px;padding:12px;font-weight:800;font-size:14px;border:1.5px solid var(--green)}
+.modal .mbtns .sec{background:#fff;color:var(--green)}
+.modal .mbtns .pri{background:var(--green);color:#fff}
+
+/* Finale */
+#finale{position:fixed;inset:0;background:linear-gradient(160deg,#2E1065,#4C1D95 60%,#5B21B6);color:#fff;z-index:55;
+  display:flex;flex-direction:column;padding:18px;overflow:auto}
+#finale .ftop{display:flex;align-items:center;gap:10px;max-width:640px;margin:0 auto;width:100%}
+#finale .lives{font-size:20px;letter-spacing:1px}
+#finale .fprog{flex:1;font-weight:800;font-size:14px;opacity:.9}
+#finale .fscore{font-weight:900;font-size:15px;background:rgba(255,255,255,.15);padding:5px 12px;border-radius:20px}
+#finale .fclose{border:none;background:rgba(255,255,255,.15);color:#fff;border-radius:10px;padding:7px 12px;font-weight:800}
+#finale .fcard{max-width:640px;margin:auto;width:100%;background:rgba(255,255,255,.97);color:var(--ink);
+  border-radius:20px;padding:26px 22px;box-shadow:0 20px 50px rgba(0,0,0,.35)}
+#finale .qlabel{font-size:12px;font-weight:800;color:#7C3AED;letter-spacing:.05em}
+#finale .ftext{font-size:19px;line-height:1.6;margin:10px 0 18px;font-weight:500}
+#finale .ftext .blank input{font-size:18px;min-width:90px;border-bottom-color:#7C3AED}
+#finale .ftext .blank input:focus{box-shadow:0 2px 0 -1px #7C3AED;border-bottom-color:#7C3AED}
+#finale .fsubmit{width:100%;background:#7C3AED;color:#fff;border:none;border-radius:12px;padding:14px;font-weight:900;font-size:16px}
+#finale .fend{text-align:center}
+#finale .fend .big{font-size:54px}
+#finale .fend h2{font-size:26px;margin:6px 0}
+#finale .fend .rank{font-size:18px;font-weight:900;color:#7C3AED;background:#fff;display:inline-block;padding:8px 18px;border-radius:30px;margin:8px 0}
+#finale .fend button{margin-top:14px;background:#fff;color:#7C3AED;border:none;border-radius:12px;padding:13px 22px;font-weight:900;font-size:15px}
+.flash{animation:flash .5s}
+@keyframes flash{0%{background:#fff}30%{background:var(--no-bg)}100%{background:#fff}}
+
+/* Toast */
+.toast{position:fixed;left:50%;bottom:26px;transform:translateX(-50%) translateY(20px);background:var(--green-d);color:#fff;
+  padding:12px 22px;border-radius:30px;font-weight:800;font-size:14px;opacity:0;pointer-events:none;transition:.25s;z-index:80;box-shadow:0 8px 24px rgba(0,0,0,.25)}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+footer{max-width:860px;margin:0 auto;padding:0 16px 36px;color:var(--mute);font-size:11px;text-align:center}
+@media(max-width:560px){.title{font-size:20px}.stage{flex-basis:100%}.qt{font-size:15px}}
+@media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+
+<!-- HOME / MAP -->
+<div id="home">
+  <header>
+    <h1 class="title han">중2 과학 4단원 · 물질의 구성<br><b>2학년 6반 최후의 1인</b></h1>
+    <div class="by">배포 <b>한도윤</b> · 골든벨 서바이벌 · 빈칸 198개</div>
+  </header>
+  <div class="player">
+    <div class="pcard">
+      <div class="prow">
+        <div class="badge"><small>LV</small><b id="pLv">1</b></div>
+        <div class="pinfo">
+          <div class="ptitle" id="pTitle">입자 새내기</div>
+          <div class="pstat"><span class="dot">★ <b id="pStars">0</b></span> &nbsp;·&nbsp; 클리어 <b id="pClear">0</b>/<b id="pTotal">12</b> 스테이지</div>
+        </div>
+      </div>
+      <div class="xpwrap">
+        <div class="xpbar"><div class="xpfill" id="xpFill"></div></div>
+        <div class="xptext"><span id="xpNow">0 XP</span><span id="xpNext">다음 레벨까지 600</span></div>
+      </div>
+    </div>
+  </div>
+  <main>
+    <div id="finaleCard"></div>
+    <div class="sectionlabel">퀘스트 지도
+      <button class="reviewbtn" id="reviewBtn">🔓 복습 모드</button>
+    </div>
+    <div id="worlds"></div>
+  </main>
+  <footer>틀려도 목숨 안 깎임(복습용) · 결승전만 목숨 3개 · 진행상황은 이 기기에 저장됩니다<br>© AXISOLVE · 과학 4단원 「물질의 구성」 요약 노트 기반</footer>
+</div>
+
+<!-- QUIZ -->
+<div id="quiz" class="hidden">
+  <div class="qbar">
+    <button class="backbtn" onclick="goHome()">← 지도</button>
+    <div class="qh"><b id="qTitle"></b><small id="qSub"></small></div>
+  </div>
+  <div class="qbody" id="qBody"></div>
+  <div class="qfoot">
+    <button class="ghost" id="revealBtn" onclick="toggleReveal()">정답</button>
+    <button class="go" onclick="gradeStage()">도전 완료!</button>
+  </div>
+</div>
+
+<!-- RESULT MODAL -->
+<div class="scrim" id="scrim"><div class="modal" id="modal"></div></div>
+
+<!-- FINALE -->
+<div id="finale" class="hidden"></div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const BANK = {
+"4-1-1":{short:"원소와 화합물",pages:[
+{no:"1쪽",title:"원소와 화합물의 정의",items:[
+`한 종류의 입자로 이루어진 물질을 [[원소]]라 한다.`,
+`원소는 물질을 이루는 [[기본 성분]]이다.`,
+`원소는 더 이상 다른 물질로 [[분해]]되지 않는다.`,
+`현재까지 알려진 원소는 약 [[120]]여 가지이다.`,
+`알려진 원소 중 약 90여 가지는 자연에서 발견되고, 약 30여 가지는 [[인공적]]으로 만들어졌다.`,
+`두 종류 이상의 입자로 이루어진 물질을 [[화합물]]이라 한다.`,
+`화합물은 화학적인 방법으로 성분 물질로 [[분해]]될 수 있다.`,
+`화합물은 성분 물질의 [[성질]]을 가지지 않는다.`,
+`산소, 수소, 질소, 구리, 철 등은 [[원소]]의 예이다.`,
+`메테인, 물, 암모니아, 포도당 등은 [[화합물]]의 예이다.`,
+`원소와 화합물은 모두 [[순물질]]로 분류된다.`,
+`두 종류 이상의 원소나 화합물이 섞인 물질을 [[혼합물]]이라 한다.`,
+`모든 물질은 [[원소]]로 이루어져 있다.`,
+`이산화 탄소와 일산화 탄소는 구성 원소가 같지만 서로 [[다른]] 물질이다.`,
+`라부아지에는 물 분해 실험으로 물이 원소가 [[아님]]을 증명하였다.`,
+`암모니아를 구성하는 원소는 질소와 [[수소]]이다.`,
+`과산화 수소를 구성하는 원소는 산소와 [[수소]]이다.`,
+`포도당을 구성하는 원소는 탄소, 산소, [[수소]]이다.`,
+`화합물의 수는 원소의 수보다 훨씬 [[많다]].`,
+`알루미늄 포일은 알루미늄 한 종류로만 이루어진 [[원소]]이다.`
+]},
+{no:"2쪽",title:"물의 전기 분해 실험",items:[
+`물 분해 실험에서 (+)극에 모인 기체는 [[산소]]이다.`,
+`물 분해 실험에서 (-)극에 모인 기체는 [[수소]]이다.`,
+`(+)극에서 발생한 기체에 꺼져가는 불씨를 대면 불씨가 다시 [[살아난다]].`,
+`(-)극에서 발생한 기체에 불씨를 대면 '[[퍽]]' 소리를 내며 탄다.`,
+`발생한 기체의 양은 (+)극보다 (-)극이 더 [[많다]].`,
+`순수한 물은 전류가 흐르지 않으므로 [[수산화 나트륨]]을 녹여 전류가 잘 흐르게 한다.`,
+`물에 녹여 전류가 잘 흐르게 하는 물질을 [[전해질]]이라 한다.`,
+`물은 산소와 수소로 분해되므로 [[원소]]가 아니다.`,
+`산소와 수소는 더 이상 분해되지 않으므로 [[원소]]이다.`,
+`물은 두 종류의 원소로 이루어져 있으므로 [[화합물]]이다.`,
+`산소는 연소를 돕는 [[조연성]] 기체이다.`,
+`수소는 불에 잘 타는 [[가연성]] 기체이다.`,
+`라부아지에는 뜨거운 주철관에 물을 통과시키는 실험으로 물을 [[분해]]하였다.`,
+`주철관 안쪽이 녹슨 것은 물에서 나온 [[산소]]와 결합했기 때문이다.`,
+`주철관을 통과해 찬물 쪽에 모인 기체는 [[수소]]이다.`,
+`물을 구성하는 원소의 종류는 [[2]]가지이다.`,
+`물 분해 실험을 통해 물이 [[원소]]가 아님을 알 수 있다.`,
+`과산화 수소는 물과 산소로 분해되므로 [[원소]]가 아니다.`
+]},
+{no:"3쪽",title:"원소 기호",items:[
+`원소를 간단히 알파벳으로 나타낸 것을 [[원소 기호]]라 한다.`,
+`현재 사용하는 원소 기호는 [[베르셀리우스]]가 제안한 방법이다.`,
+`원소 기호는 원소 이름의 첫 글자를 알파벳 [[대문자]]로 나타낸다.`,
+`첫 글자가 같을 때는 단어 중간 글자를 첫 글자 다음에 [[소문자]]로 나타낸다.`,
+`수소의 원소 기호는 [[H]]이다.`,
+`헬륨의 원소 기호는 [[He]]이다.`,
+`리튬의 원소 기호는 [[Li]]이다.`,
+`탄소의 원소 기호는 [[C]]이다.`,
+`질소의 원소 기호는 [[N]]이다.`,
+`산소의 원소 기호는 [[O]]이다.`,
+`나트륨의 원소 기호는 [[Na]]이다.`,
+`마그네슘의 원소 기호는 [[Mg]]이다.`,
+`알루미늄의 원소 기호는 [[Al]]이다.`,
+`염소의 원소 기호는 [[Cl]]이다.`,
+`칼륨의 원소 기호는 [[K]]이다.`,
+`칼슘의 원소 기호는 [[Ca]]이다.`,
+`철의 원소 기호는 [[Fe]]이다.`,
+`구리의 원소 기호는 [[Cu]]이다.`,
+`납의 원소 기호는 [[Pb]]이다.`,
+`은의 원소 기호는 [[Ag]]이다.`,
+`금의 원소 기호는 [[Au]]이다.`
+]},
+{no:"4쪽",title:"화학식",items:[
+`물질을 구성하는 입자의 종류와 수를 원소 기호와 숫자로 나타낸 식을 [[화학식]]이라 한다.`,
+`화학식에서 원자의 수는 원소 기호의 오른쪽 [[아래]]에 작은 숫자로 표기한다.`,
+`화학식에서 숫자 [[1]]은 생략한다.`,
+`수소 기체의 화학식은 [[H₂|H2]]이다.`,
+`산소 기체의 화학식은 [[O₂|O2]]이다.`,
+`질소 기체의 화학식은 [[N₂|N2]]이다.`,
+`오존의 화학식은 [[O₃|O3]]이다.`,
+`물의 화학식은 [[H₂O|H2O]]이다.`,
+`과산화 수소의 화학식은 [[H₂O₂|H2O2]]이다.`,
+`메테인의 화학식은 [[CH₄|CH4]]이다.`,
+`암모니아의 화학식은 [[NH₃|NH3]]이다.`,
+`이산화 탄소의 화학식은 [[CO₂|CO2]]이다.`,
+`일산화 탄소의 화학식은 [[CO]]이다.`,
+`염화 수소의 화학식은 [[HCl]]이다.`,
+`염화 나트륨의 화학식은 [[NaCl]]이다.`,
+`포도당의 화학식은 [[C₆H₁₂O₆|C6H12O6]]이다.`,
+`CH<sub>4</sub>는 탄소 원자 1개와 수소 원자 [[4]]개로 이루어진다.`,
+`암모니아는 질소 원자 1개와 수소 원자 [[3]]개로 이루어진다.`
+]}
+]},
+"4-1-2":{short:"원자와 주기율표",pages:[
+{no:"1쪽",title:"원자의 구조",items:[
+`물질을 이루는 기본 입자를 [[원자]]라 한다.`,
+`원자는 중심의 원자핵과 그 주위의 [[전자]]로 이루어져 있다.`,
+`원자핵은 양성자와 [[중성자]]로 이루어져 있다.`,
+`(+)전하를 띠는 입자는 [[양성자]]이다.`,
+`전하를 띠지 않는 입자는 [[중성자]]이다.`,
+`(-)전하를 띠는 입자는 [[전자]]이다.`,
+`양성자 1개의 전하량은 [[+1]]이다.`,
+`전자 1개의 전하량은 [[-1]]이다.`,
+`원자핵은 원자의 [[중심]]에 매우 작은 크기로 존재한다.`,
+`원자 질량의 대부분은 [[원자핵]]이 차지한다.`,
+`전자는 질량이 매우 [[작아]] 원자 질량에 거의 영향을 주지 않는다.`,
+`전자는 원자핵 [[주위]]를 움직인다.`,
+`원자 내부는 대부분 [[빈 공간]]으로 이루어져 있다.`,
+`원자는 매우 작아 눈으로 볼 수 없어 [[원자 모형]]으로 나타낸다.`,
+`전자는 원자 밖으로 [[이동]]이 가능하다.`
+]},
+{no:"2쪽",title:"원자의 특징과 종류",items:[
+`원자는 양성자 수와 전자 수가 같아 전기적으로 [[중성]]이다.`,
+`원자의 종류는 [[양성자]] 수에 따라 달라진다.`,
+`양성자 수가 1개이면 [[수소]] 원자이다.`,
+`양성자 수가 8개이면 [[산소]] 원자이다.`,
+`양성자와 전자는 전하량의 크기는 같고 부호는 [[반대]]이다.`,
+`탄소 원자의 양성자 수가 6개이면 전자 수도 [[6]]개이다.`,
+`탄소 원자핵의 전하량은 [[+6]]이다.`,
+`양성자 수가 3개인 원자는 [[리튬]]이다.`,
+`전자가 이동해 개수가 변해도 양성자는 이동하지 않아 원자의 [[종류]]는 바뀌지 않는다.`,
+`원자핵의 (+)전하량과 전자의 총 (-)전하량의 크기는 [[같다]].`,
+`원자의 종류에 따라 원자핵의 [[전하량]]과 전자 수가 다르다.`,
+`모든 물질은 [[원자]]로 이루어져 있다.`,
+`돌턴은 모든 물질이 더 이상 쪼개지지 않는 [[원자]]로 이루어져 있다고 주장하였다.`,
+`양성자 수가 5개인 원자는 [[붕소]]이다.`,
+`원자가 전기적으로 중성인 까닭은 전체 전하량이 [[0]]이기 때문이다.`
+]},
+{no:"3쪽",title:"주기율표",items:[
+`원소를 원자 번호에 따라 나열하고 성질이 규칙적으로 나타나도록 배치한 표를 [[주기율표]]라 한다.`,
+`원자의 양성자 수를 기준으로 정한 번호를 [[원자 번호]]라 한다.`,
+`원자 번호는 양성자 수와 [[같다]].`,
+`주기율표의 가로줄을 [[주기]]라 한다.`,
+`주기율표의 세로줄을 [[족]]이라 한다.`,
+`주기는 1주기에서 [[7]]주기까지 있다.`,
+`족은 1족에서 [[18]]족까지 있다.`,
+`같은 [[족]] 원소들은 성질이 비슷하다.`,
+`현재 주기율표는 [[모즐리]]의 제안을 바탕으로 원자 번호 순으로 배열한다.`,
+`멘델레예프는 원소를 원자의 [[질량]] 순으로 배열하였다.`,
+`같은 [[주기]] 원소는 같은 가로줄에 있다.`,
+`원자 번호 8번 원소의 양성자는 [[8]]개이다.`,
+`성질이 비슷한 원소가 나오면 줄을 바꾸어 같은 [[세로줄]]에 오도록 배치한다.`,
+`양성자 수가 9개인 플루오린 원자의 원자 번호는 [[9]]이다.`
+]},
+{no:"4쪽",title:"같은 족 원소의 특징",items:[
+`리튬, 나트륨, 칼륨은 [[1]]족 원소이다.`,
+`헬륨, 네온, 아르곤은 [[18]]족 원소이다.`,
+`1족 원소는 실온에서 [[고체]] 상태이다.`,
+`18족 원소는 실온에서 [[기체]] 상태이다.`,
+`1족 원소는 은백색 광택이 나는 [[무른]] 금속이다.`,
+`1족 원소는 밀도가 작아 물에 [[뜬다]].`,
+`1족 원소는 반응성이 [[커서]] 물이나 산소와 활발하게 반응한다.`,
+`18족 원소는 매우 안정하여 다른 물질과 잘 반응하지 [[않는다]].`,
+`1족 원소는 물과 반응하면 [[수소]] 기체가 발생한다.`,
+`1족 원소를 [[알칼리 금속]]이라고도 한다.`,
+`1족 원소는 반응성이 커서 석유나 [[액체 파라핀]] 등에 넣어 보관한다.`,
+`헬륨은 공기보다 밀도가 작아 [[비행선]]의 충전 기체로 사용한다.`,
+`네온은 전기가 흐르면 색을 띠어 [[광고판]]이나 조명에 사용한다.`,
+`아르곤은 안정하여 금속 [[용접]] 시 보호 기체로 사용한다.`,
+`1족 원소는 칼로 자를 수 있을 만큼 [[무르다]].`
+]}
+]},
+"4-2-1":{short:"분자와 이온",pages:[
+{no:"1쪽",title:"분자와 분자식",items:[
+`독립된 입자로 존재하며 물질의 성질을 나타내는 가장 작은 입자를 [[분자]]라 한다.`,
+`분자가 원자로 나누어지면 물질의 [[성질]]을 잃는다.`,
+`결합하는 원자의 종류와 수에 따라 분자의 [[종류]]가 달라진다.`,
+`원소 기호로 분자를 구성하는 원자의 종류와 수를 나타낸 것을 [[분자식]]이라 한다.`,
+`분자는 크기가 매우 작아 [[분자 모형]]으로 나타낸다.`,
+`산소 분자는 산소 원자 [[2]]개로 이루어져 있다.`,
+`물 분자는 수소 원자 2개와 산소 원자 [[1]]개로 이루어져 있다.`,
+`암모니아 분자는 질소 원자 1개와 수소 원자 [[3]]개로 이루어져 있다.`,
+`메테인 분자는 탄소 원자 1개와 수소 원자 [[4]]개로 이루어져 있다.`,
+`일산화 탄소와 이산화 탄소는 구성 원소가 같지만 원자의 수가 달라 [[다른]] 분자이다.`,
+`분자식 앞의 숫자는 [[분자]]의 개수를 의미한다.`,
+`3H<sub>2</sub>O에서 분자의 개수는 [[3]]개이다.`,
+`질소 분자(N<sub>2</sub>)를 이루는 원소의 종류는 [[1]]가지이다.`,
+`암모니아 분자를 이루는 원자의 총 개수는 [[4]]개이다.`,
+`메테인 분자를 이루는 원자의 총 개수는 [[5]]개이다.`,
+`2CH<sub>4</sub>는 메테인 분자 [[2]]개를 의미한다.`,
+`같은 종류의 원자끼리 결합하거나 다른 종류의 원자가 결합해 [[분자]]를 만들 수 있다.`
+]},
+{no:"2쪽",title:"이온의 형성과 이온식",items:[
+`원자가 전자를 잃거나 얻어 전기적 성질을 띠게 된 입자를 [[이온]]이라 한다.`,
+`원자가 전자를 잃어 (+)전하를 띠는 입자를 [[양이온]]이라 한다.`,
+`원자가 전자를 얻어 (-)전하를 띠는 입자를 [[음이온]]이라 한다.`,
+`양이온은 (+)전하량이 (-)전하량보다 [[크다]].`,
+`음이온은 (+)전하량이 (-)전하량보다 [[작다]].`,
+`이온이 형성될 때 원자핵 속 양성자 수는 [[변하지 않는다|변하지 않음]].`,
+`원자가 이온이 되는 과정에서 변하는 것은 [[전자]] 수이다.`,
+`이온식에서 오른쪽 위 숫자는 잃거나 얻은 [[전자]]의 수를 의미한다.`,
+`이온식에서 숫자 [[1]]은 생략한다.`,
+`양이온의 이름은 원소 이름 뒤에 '[[이온]]'을 붙인다.`,
+`음이온의 이름은 원소 이름 뒤에 '[[-화 이온|화 이온]]'을 붙인다.`,
+`수산화 이온처럼 여러 원자가 모여 하나의 이온을 이루는 것을 [[다원자 이온]]이라 한다.`,
+`원자가 전자를 잃으면 [[양이온]]이 된다.`,
+`원자가 전자를 얻으면 [[음이온]]이 된다.`
+]},
+{no:"3쪽",title:"여러 가지 이온의 이온식",items:[
+`수소 이온의 이온식은 [[H⁺|H+]]이다.`,
+`나트륨 이온의 이온식은 [[Na⁺|Na+]]이다.`,
+`칼륨 이온의 이온식은 [[K⁺|K+]]이다.`,
+`리튬 이온의 이온식은 [[Li⁺|Li+]]이다.`,
+`칼슘 이온의 이온식은 [[Ca²⁺|Ca2+]]이다.`,
+`마그네슘 이온의 이온식은 [[Mg²⁺|Mg2+]]이다.`,
+`구리 이온의 이온식은 [[Cu²⁺|Cu2+]]이다.`,
+`암모늄 이온의 이온식은 [[NH₄⁺|NH4+]]이다.`,
+`염화 이온의 이온식은 [[Cl⁻|Cl-]]이다.`,
+`산화 이온의 이온식은 [[O²⁻|O2-]]이다.`,
+`플루오린화 이온의 이온식은 [[F⁻|F-]]이다.`,
+`수산화 이온의 이온식은 [[OH⁻|OH-]]이다.`,
+`질산 이온의 이온식은 [[NO₃⁻|NO3-]]이다.`,
+`탄산 이온의 이온식은 [[CO₃²⁻|CO3 2-|CO32-]]이다.`,
+`황산 이온의 이온식은 [[SO₄²⁻|SO4 2-|SO42-]]이다.`,
+`Na<sup>+</sup>의 이온 이름은 [[나트륨 이온]]이다.`,
+`Cl<sup>-</sup>의 이온 이름은 [[염화 이온]]이다.`
+]},
+{no:"4쪽",title:"이온의 이동과 전기 전도성",items:[
+`이온이 든 수용액에 전원을 연결하면 양이온은 [[(-)극|음극]]으로 이동한다.`,
+`이온이 든 수용액에 전원을 연결하면 음이온은 [[(+)극|양극]]으로 이동한다.`,
+`양이온이 (-)극으로 이동하는 것은 서로 다른 전하끼리 끌어당기는 [[전기력]] 때문이다.`,
+`이온이 들어 있는 수용액은 전류가 [[흐른다|흐름]].`,
+`이온이 없는 수용액은 전류가 [[흐르지 않는다|흐르지 않음]].`,
+`증류수와 설탕물은 전류가 [[흐르지 않는다|흐르지 않음]].`,
+`소금물과 이온 음료는 전류가 [[흐른다|흐름]].`,
+`설탕물이 전류가 흐르지 않는 까닭은 전하를 띠지 않는 [[분자]] 상태로 녹아 있기 때문이다.`,
+`황산 구리 수용액의 파란색 성분은 [[구리 이온]]이다.`,
+`구리 이온은 양이온이므로 [[(-)극|음극]] 쪽으로 이동한다.`,
+`과망가니즈산 칼륨 수용액의 보라색 성분은 [[과망가니즈산 이온]]이다.`,
+`과망가니즈산 이온은 음이온이므로 [[(+)극|양극]] 쪽으로 이동한다.`,
+`질산 칼륨 수용액은 전류가 잘 흐르도록 하는 [[전해질]] 역할을 한다.`,
+`두 개 이상의 원자가 모여 전하를 띠는 이온을 [[다원자 이온]]이라 한다.`
+]}
+]},
+};
+const order=["4-1-1","4-1-2","4-2-1"];
+
+/* ===== utils ===== */
+const $=(s,r=document)=>r.querySelector(s);
+function norm(s){return (s||'').trim().toLowerCase().replace(/\s+/g,'').replace(/[''`]/g,"'").replace(/[（）()]/g,'');}
+function parse(text){
+  const answers=[];let i=0;
+  const html=text.replace(/\[\[(.+?)\]\]/g,(m,grp)=>{
+    const alts=grp.split('|').map(s=>s.trim());const idx=i++;answers.push(alts);
+    const w=Math.max(64,Math.min(190,alts[0].length*17+30));
+    return `<span class="blank"><input data-i="${idx}" style="width:${w}px" autocomplete="off" autocapitalize="off" spellcheck="false"><span class="ansnote" data-i="${idx}">${alts[0]}</span></span>`;
+  });
+  return {html,answers};
+}
+
+/* ===== build flat stage list ===== */
+const STAGES=[];           // {id, lesson, pi, no, title, items, count}
+const LESSONS=[];          // {key, short, stages:[idx...]}
+order.forEach(k=>{
+  const d=BANK[k];const grp={key:k,short:d.short,stages:[]};
+  d.pages.forEach((pg,pi)=>{
+    let count=0;pg.items.forEach(it=>count+=(it.match(/\[\[.+?\]\]/g)||[]).length);
+    const id=k+'#'+pi;
+    STAGES.push({id,lesson:k,pi,no:pg.no,title:pg.title,items:pg.items,count});
+    grp.stages.push(STAGES.length-1);
+  });
+  LESSONS.push(grp);
+});
+const TOTAL_STAGES=STAGES.length;
+function stageById(id){return STAGES.find(s=>s.id===id);}
+
+/* ===== progress / persistence ===== */
+const SAVEKEY='msc_chem_2_6_v1';
+let P={best:{},finaleBest:0,review:false};
+function load(){try{const r=localStorage.getItem(SAVEKEY);if(r)P=Object.assign(P,JSON.parse(r));}catch(e){}}
+function save(){try{localStorage.setItem(SAVEKEY,JSON.stringify(P));}catch(e){}}
+load();
+
+/* ===== scoring / level ===== */
+function starsOf(id){const s=stageById(id);const b=P.best[id]||0;const acc=b/s.count;
+  if(acc>=0.95)return 3;if(acc>=0.8)return 2;if(acc>=0.6)return 1;return 0;}
+function clearedCount(){return STAGES.filter(s=>starsOf(s.id)>=1).length;}
+function totalStars(){return STAGES.reduce((a,s)=>a+starsOf(s.id),0);}
+function totalXP(){
+  let xp=0;STAGES.forEach(s=>{xp+=(P.best[s.id]||0)*10;xp+=starsOf(s.id)*100;});
+  xp+=(P.finaleBest||0)*15;return xp;}
+const LV=[
+  {xp:0,t:'입자 새내기'},{xp:350,t:'원소 견습생'},{xp:800,t:'기호 수집가'},
+  {xp:1400,t:'화학식 장인'},{xp:2100,t:'원자 해부가'},{xp:2900,t:'주기율표 항해사'},
+  {xp:3700,t:'분자 조립가'},{xp:4500,t:'이온 추적자'},{xp:5300,t:'2-6 화학 패왕'},
+  {xp:6000,t:'물질의 구성 마스터 👑'}
+];
+function levelInfo(xp){
+  let lv=1;for(let i=0;i<LV.length;i++){if(xp>=LV[i].xp)lv=i+1;}
+  const cur=LV[lv-1];const next=LV[lv]||null;
+  const prog=next?Math.min(1,(xp-cur.xp)/(next.xp-cur.xp)):1;
+  return {lv,title:cur.t,curXp:cur.xp,nextXp:next?next.xp:cur.xp,prog,max:!next};
+}
+function lessonUnlocked(li){
+  if(P.review||li===0)return true;
+  const prev=LESSONS[li-1];const cl=prev.stages.filter(i=>starsOf(STAGES[i].id)>=1).length;
+  return cl/prev.stages.length>=0.6;
+}
+function finaleUnlocked(){return STAGES.every(s=>starsOf(s.id)>=1);}
+
+/* ===== render player ===== */
+function renderPlayer(){
+  const xp=totalXP();const L=levelInfo(xp);
+  $('#pLv').textContent=L.lv;$('#pTitle').textContent=L.title;
+  $('#pStars').textContent=totalStars();$('#pClear').textContent=clearedCount();var _pt=$('#pTotal');if(_pt)_pt.textContent=TOTAL_STAGES;
+  $('#xpFill').style.width=(L.prog*100)+'%';
+  $('#xpNow').textContent=xp.toLocaleString()+' XP';
+  $('#xpNext').textContent=L.max?'최고 레벨 달성!':('다음 레벨까지 '+(L.nextXp-xp).toLocaleString());
+}
+
+/* ===== render finale card ===== */
+function renderFinale(){
+  const open=finaleUnlocked();
+  $('#finaleCard').innerHTML=
+    `<div class="finale-card ${open?'':'locked'}">
+       <span class="fx">🔔</span>
+       <h3 class="han">👑 최후의 1인 골든벨</h3>
+       <p>${open?'전 스테이지 클리어 완료! 랜덤 30문제 서바이벌. 목숨 3개, 최후까지 살아남아라.':'모든 스테이지를 ★ 1개 이상으로 클리어하면 열립니다. ('+clearedCount()+'/'+TOTAL_STAGES+')'}</p>
+       <button class="btn" ${open?'onclick="startFinale()"':''}>${open?'결승전 입장':'🔒 잠김'}</button>
+     </div>`;
+}
+
+/* ===== render worlds/map ===== */
+function renderWorlds(){
+  const el=$('#worlds');
+  el.innerHTML=LESSONS.map((g,li)=>{
+    const unlocked=lessonUnlocked(li);
+    const cl=g.stages.filter(i=>starsOf(STAGES[i].id)>=1).length;
+    const st=g.stages.reduce((a,i)=>a+starsOf(STAGES[i].id),0);
+    const maxst=g.stages.length*3;
+    const chips=g.stages.map(i=>{
+      const s=STAGES[i];const stars=starsOf(s.id);
+      const slocked=!unlocked;
+      const star=`<span class="stars">${'★'.repeat(stars)}<span class="e">${'★'.repeat(3-stars)}</span></span>`;
+      return `<div class="stage ${slocked?'locked':''}" ${slocked?'':`onclick="openStage('${s.id}')"`}>
+        <span class="sno">${s.no}</span><span class="stt">${s.title}</span>${slocked?'<span class="stars">🔒</span>':star}</div>`;
+    }).join('');
+    return `<div class="world ${unlocked?'':'locked'}" data-li="${li}">
+      <div class="whead" onclick="toggleWorld(${li})">
+        <div class="wno">${li+1}</div>
+        <div class="wtitle"><b>${g.short}</b><small>${g.key} · ${g.stages.length}개 스테이지</small></div>
+        <div class="wmeta">${unlocked?`★${st}/${maxst} · ${cl}/${g.stages.length}`:'<span class="lk">🔒 잠김</span>'}</div>
+        <span class="chev">▶</span>
+      </div>
+      <div class="stages">${chips}</div>
+    </div>`;
+  }).join('');
+}
+function s_label(li){const names={'1-1':'1단원','2-1':'2단원','2-2':'2단원','2-3':'2단원','3-1':'3단원','3-2':'3단원','3-3':'3단원','4-1':'4단원','4-2':'4단원','4-3':'4단원'};return names[LESSONS[li].key]||'';}
+let openWorld=0;
+function toggleWorld(li){
+  const w=document.querySelector(`.world[data-li="${li}"]`);
+  if(!w)return;
+  if(!lessonUnlocked(li)){toast('이전 단원을 60% 이상 클리어하면 열려요 🔒');return;}
+  document.querySelectorAll('.world.open').forEach(x=>{if(x!==w)x.classList.remove('open')});
+  w.classList.toggle('open');
+}
+
+/* ===== quiz ===== */
+let curStage=null,revealed=false;
+function openStage(id){
+  curStage=stageById(id);revealed=false;
+  $('#qTitle').textContent=curStage.title;
+  $('#qSub').textContent=`${curStage.lesson} · ${curStage.no} · 빈칸 ${curStage.count}개`;
+  $('#qBody').innerHTML=curStage.items.map((it,qi)=>{
+    const p=parse(it);
+    return `<div class="q"><div class="qn">${qi+1}</div><div class="qt" data-ans='${JSON.stringify(p.answers)}'>${p.html}</div></div>`;
+  }).join('');
+  $('#revealBtn').textContent='정답';
+  $('#home').classList.add('hidden');$('#quiz').classList.remove('hidden');
+  window.scrollTo(0,0);
+}
+function goHome(){
+  $('#quiz').classList.add('hidden');$('#home').classList.remove('hidden');
+  refresh();
+}
+function toggleReveal(){
+  revealed=!revealed;
+  document.querySelectorAll('#qBody .qt').forEach(qt=>{
+    const ans=JSON.parse(qt.dataset.ans);
+    qt.querySelectorAll('input').forEach(inp=>{
+      const note=qt.querySelector('.ansnote[data-i="'+inp.dataset.i+'"]');
+      if(revealed){note.classList.add('show');inp.placeholder=ans[+inp.dataset.i][0];}
+      else{note.classList.remove('show');inp.placeholder='';}
+    });
+  });
+  $('#revealBtn').textContent=revealed?'숨기기':'정답';
+}
+function gradeStage(){
+  let total=0,ok=0;
+  document.querySelectorAll('#qBody .qt').forEach(qt=>{
+    const ans=JSON.parse(qt.dataset.ans);
+    qt.querySelectorAll('input').forEach(inp=>{
+      total++;const alts=ans[+inp.dataset.i].map(norm);
+      const note=qt.querySelector('.ansnote[data-i="'+inp.dataset.i+'"]');
+      inp.classList.remove('ok','no');note.classList.remove('show');
+      if(norm(inp.value)!=='' && alts.includes(norm(inp.value))){inp.classList.add('ok');ok++;}
+      else{inp.classList.add('no');note.classList.add('show');}
+    });
+  });
+  const before=totalXP(),beforeLv=levelInfo(before).lv;
+  const prevBest=P.best[curStage.id]||0;
+  if(ok>prevBest){P.best[curStage.id]=ok;save();}
+  const after=totalXP(),afterLv=levelInfo(after).lv;
+  showResult(ok,total,after-before,afterLv>beforeLv?afterLv:0);
+}
+function showResult(ok,total,gain,lvUp){
+  const acc=Math.round(ok/total*100);
+  const stars=acc>=95?3:acc>=80?2:acc>=60?1:0;
+  const starHtml='★'.repeat(stars)+`<span class="e">${'★'.repeat(3-stars)}</span>`;
+  const msg=stars===3?'완벽! 다 뿌셨다 🔥':stars===2?'좋아, 거의 다 왔어!':stars===1?'클리어! 한 번 더 노려보자':'아직이야, 정답 보고 다시!';
+  const idx=STAGES.indexOf(curStage);const nextS=STAGES[idx+1];
+  const nextOk=nextS && lessonUnlocked(LESSONS.findIndex(g=>g.key===nextS.lesson));
+  $('#modal').innerHTML=
+    `<div class="bigstars">${starHtml}</div>
+     <h2 class="han">${ok} / ${total} 정답</h2>
+     <div class="acc">정답률 ${acc}% · ${msg}</div>
+     ${lvUp?`<div class="lvlup">🎉 LEVEL UP! Lv.${lvUp} ${LV[lvUp-1].t}</div>`:''}
+     <div class="xpget ${gain>0?'':'none'}">${gain>0?'+'+gain+' XP':'기록 갱신 없음'}</div>
+     <div class="mbtns">
+       <button class="sec" onclick="closeModal();openStage('${curStage.id}')">다시</button>
+       ${nextS?`<button class="pri" onclick="closeModal();${nextOk?`openStage('${nextS.id}')`:`goHome()`}">${nextOk?'다음 ▶':'지도로'}</button>`:`<button class="pri" onclick="closeModal();goHome()">지도로</button>`}
+     </div>`;
+  $('#scrim').classList.add('show');
+  if(lvUp)toast('🎉 레벨 업! Lv.'+lvUp+' '+LV[lvUp-1].t);
+}
+function closeModal(){$('#scrim').classList.remove('show');}
+
+/* ===== finale (golden bell) ===== */
+let F=null;
+function startFinale(){
+  if(!finaleUnlocked())return;
+  const pool=[];
+  STAGES.forEach(s=>s.items.forEach(it=>{if((it.match(/\[\[.+?\]\]/g)||[]).length===1)pool.push(it);}));
+  for(let i=pool.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[pool[i],pool[j]]=[pool[j],pool[i]];}
+  F={qs:pool.slice(0,30),idx:0,lives:3,score:0};
+  $('#finale').classList.remove('hidden');renderFinaleQ();
+}
+function renderFinaleQ(){
+  if(F.idx>=F.qs.length||F.lives<=0){return finaleEnd();}
+  const p=parse(F.qs[F.idx]);
+  $('#finale').innerHTML=
+    `<div class="ftop">
+       <span class="lives">${'❤️'.repeat(F.lives)}${'🤍'.repeat(3-F.lives)}</span>
+       <span class="fprog">${F.idx+1} / ${F.qs.length}</span>
+       <span class="fscore">🔔 ${F.score}</span>
+       <button class="fclose" onclick="quitFinale()">나가기</button>
+     </div>
+     <div class="fcard" id="fcard">
+       <div class="qlabel">최후의 1인 골든벨</div>
+       <div class="ftext" data-ans='${JSON.stringify(p.answers)}'>${p.html}</div>
+       <button class="fsubmit" onclick="finaleSubmit()">제출 ⏎</button>
+     </div>`;
+  const inp=$('#finale input');if(inp){inp.focus();inp.addEventListener('keydown',e=>{if(e.key==='Enter')finaleSubmit();});}
+}
+function finaleSubmit(){
+  const t=$('#finale .ftext');const ans=JSON.parse(t.dataset.ans);
+  const inp=t.querySelector('input');const alts=ans[0].map(norm);
+  const correct=norm(inp.value)!=='' && alts.includes(norm(inp.value));
+  inp.classList.add(correct?'ok':'no');
+  const note=t.querySelector('.ansnote');note.classList.add('show');
+  if(correct){F.score++;}else{F.lives--;$('#fcard').classList.add('flash');}
+  $('#finale .fscore').textContent='🔔 '+F.score;
+  $('#finale .lives').innerHTML='❤️'.repeat(Math.max(0,F.lives))+'🤍'.repeat(3-Math.max(0,F.lives));
+  $('#finale .fsubmit').textContent=correct?'정답! 다음 ▶':'땡! 다음 ▶';
+  $('#finale .fsubmit').onclick=()=>{F.idx++;renderFinaleQ();};
+}
+function finaleEnd(){
+  if(F.score>(P.finaleBest||0)){P.finaleBest=F.score;save();}
+  const win=F.lives>0 && F.idx>=F.qs.length;
+  const rank=F.score>=28?'최후의 1인 👑':F.score>=22?'2-6 화학 패왕':F.score>=15?'골든벨 준결승급':F.score>=8?'성장하는 도전자':'다음엔 더 멀리';
+  $('#finale').innerHTML=
+    `<div class="fcard fend">
+       <div class="big">${win?'👑':F.score>=15?'🔔':'💪'}</div>
+       <h2 class="han">${win?'최후의 1인 등극!':'골든벨 종료'}</h2>
+       <div>30문제 중 <b>${F.score}</b>문제 정답</div>
+       <div class="rank">${rank}</div>
+       <div><button onclick="startFinale()">다시 도전</button> <button onclick="quitFinale()">지도로</button></div>
+     </div>`;
+}
+function quitFinale(){$('#finale').classList.add('hidden');refresh();}
+
+/* ===== misc ===== */
+let to;function toast(m){const t=$('#toast');t.textContent=m;t.classList.add('show');clearTimeout(to);to=setTimeout(()=>t.classList.remove('show'),2000);}
+$('#reviewBtn').onclick=()=>{P.review=!P.review;save();$('#reviewBtn').classList.toggle('on',P.review);toast(P.review?'복습 모드 ON · 전체 잠금 해제':'복습 모드 OFF');refresh();};
+function refresh(){renderPlayer();renderFinale();renderWorlds();
+  const w=document.querySelector(`.world[data-li="${openWorld}"]`);if(w&&lessonUnlocked(openWorld))w.classList.add('open');
+  $('#reviewBtn').classList.toggle('on',P.review);}
+document.addEventListener('keydown',e=>{if((e.ctrlKey||e.metaKey)&&e.key==='Enter'&&!$('#quiz').classList.contains('hidden'))gradeStage();});
+
+refresh();
+</script>
+</body>
+</html>

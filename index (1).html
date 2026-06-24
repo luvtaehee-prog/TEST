@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>2학년 6반 · 최후의 1인</title>
+  <meta name="description" content="2학년 6반 최후의 1인 — 과학·역사 퀴즈 게임 모음. by 한도윤">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Noto+Sans+KR:wght@400;500;700;900&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --green:#0E5C3F; --green-d:#093F2B; --green-l:#13754F;
+      --ivory:#F6F4EC; --paper:#FFFFFF; --ink:#1A2421; --mute:#6B7670;
+      --gold:#E8B53D; --gold-d:#C7951E; --line:#E2E0D6;
+    }
+    *{box-sizing:border-box;margin:0;padding:0;}
+    body{
+      font-family:'Noto Sans KR',sans-serif; background:var(--ivory); color:var(--ink);
+      min-height:100vh; display:flex; flex-direction:column; align-items:center;
+      padding:clamp(1.5rem,5vw,4rem) 1.2rem;
+    }
+    .top{ text-align:center; max-width:680px; }
+    .crest{
+      display:inline-block; background:linear-gradient(135deg,var(--gold),var(--gold-d));
+      color:#3a2c05; font-weight:700; font-size:.82rem; letter-spacing:.1em;
+      padding:.4rem 1rem; border-radius:999px; margin-bottom:1.4rem;
+    }
+    h1{
+      font-family:'Black Han Sans',sans-serif; font-weight:400;
+      font-size:clamp(2.6rem,9vw,5rem); line-height:1.02; color:var(--green);
+      letter-spacing:-0.01em;
+    }
+    h1 .small{ display:block; font-size:clamp(1.1rem,3.5vw,1.6rem); color:var(--ink); margin-bottom:.6rem; }
+    .sub{ margin-top:1rem; color:var(--mute); font-size:1.05rem; }
+
+    .cards{
+      margin-top:clamp(2rem,6vw,3.5rem); width:100%; max-width:760px;
+      display:grid; grid-template-columns:1fr 1fr; gap:1.2rem;
+    }
+    .card{
+      display:flex; flex-direction:column; text-decoration:none; color:inherit;
+      background:var(--paper); border:1px solid var(--line); border-radius:18px;
+      overflow:hidden; transition:transform .15s, box-shadow .15s;
+    }
+    .card:hover{ transform:translateY(-4px); box-shadow:0 14px 30px rgba(14,92,63,.16); }
+    .card:focus-visible{ outline:3px solid var(--gold); outline-offset:3px; }
+    .banner{
+      background:linear-gradient(135deg,var(--green) 0%,var(--green-d) 75%);
+      color:#fff; padding:2.2rem 1.4rem; text-align:center;
+    }
+    .banner .icon{ font-size:2.6rem; line-height:1; }
+    .banner .tag{
+      display:inline-block; margin-top:.9rem; font-size:.75rem; font-weight:700;
+      letter-spacing:.08em; background:rgba(255,255,255,.16); padding:.25rem .7rem; border-radius:999px;
+    }
+    .body{ padding:1.4rem; }
+    .body h2{ font-family:'Black Han Sans',sans-serif; font-weight:400; font-size:1.5rem; color:var(--green); }
+    .body p{ color:var(--mute); font-size:.95rem; margin-top:.4rem; }
+    .go{ margin-top:1rem; font-weight:700; color:var(--gold-d); font-size:.95rem; }
+    .go::after{ content:" →"; }
+
+    footer{ margin-top:auto; padding-top:2.5rem; color:var(--mute); font-size:.85rem; text-align:center; }
+    footer b{ color:var(--green); }
+
+    @media (max-width:560px){ .cards{ grid-template-columns:1fr; } }
+    @media (prefers-reduced-motion:reduce){ *{transition:none!important;} }
+  </style>
+</head>
+<body>
+  <div class="top">
+    <span class="crest">2학년 6반</span>
+    <h1><span class="small">최후의 1인</span>QUIZ ARENA</h1>
+    <p class="sub">단원을 정복하고 마지막까지 살아남아라. 과목을 골라 시작하세요.</p>
+  </div>
+
+  <nav class="cards">
+    <a class="card" href="science.html">
+      <div class="banner">
+        <div class="icon">🧪</div>
+        <span class="tag">과학 · 중2 4단원</span>
+      </div>
+      <div class="body">
+        <h2>물질의 구성</h2>
+        <p>빈칸 테스트로 핵심 개념을 정복하는 골든벨 게임.</p>
+        <span class="go">시작하기</span>
+      </div>
+    </a>
+
+    <a class="card" href="history.html">
+      <div class="banner">
+        <div class="icon">📜</div>
+        <span class="tag">역사</span>
+      </div>
+      <div class="body">
+        <h2>역사 뿌수기</h2>
+        <p>문제를 풀며 끝까지 살아남는 최후의 1인 게임.</p>
+        <span class="go">시작하기</span>
+      </div>
+    </a>
+  </nav>
+
+  <footer>made by <b>한도윤</b> · 2학년 6반</footer>
+</body>
+</html>
